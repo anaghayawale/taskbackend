@@ -32,14 +32,10 @@ router.post('/add', async (req, res) => {
 });
 
 router.post('/delete', async (req, res) => {
-    const deletedNote = await Note.findByIdAndDelete(req.body.id);
-    if (deletedNote) {
-        const response = { success: true, message: `Note deleted successfully! id: ${req.body.id}` };
-        res.json(response);
-    } else {
-        const response = { success: false, error: `Note not found! id: ${req.body.id}` };
-        res.json(response);
-    }
+    await Note.deleteOne(req.body.id);
+    const response = {success: true, message: "Note deleted successfully! " + ` id: ${req.body.id}`};
+    res.json(response);
+    
 });
 
 module.exports = router;

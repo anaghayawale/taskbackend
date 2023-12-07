@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const Note = require('./models/Note');
 const bodyParser = require('body-parser');
 require('dotenv').config()
-console.log("this is env",process.env.ANAGHA)
+
 
 
 app.use(bodyParser.urlencoded({extended: false}));
@@ -18,6 +18,10 @@ mongoose.connect(mongodbPath).then(function (){
     app.use('/api', noteRouter)
 });
 
+
+app.get('/', function (req, res){
+    res.send('Server is running');
+}); 
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, function (){

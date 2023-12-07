@@ -32,7 +32,7 @@ router.post('/add', async (req, res) => {
 });
 
 router.post('/delete', async (req, res) => {
-    await Note.deleteOne(req.body.id);
+    await Note.deleteOne({ id: req.body.id });
     const response = {success: true, message: "Note deleted successfully! " + ` id: ${req.body.id}`};
     res.json(response);
     

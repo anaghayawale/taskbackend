@@ -16,6 +16,8 @@ router.post('/list', async (req, res) => {
 
 router.post('/add', async (req, res) => {
     
+    try {
+    
     await Note.deleteOne({id: req.body.id});
 
     const newNote = new Note({
@@ -29,12 +31,33 @@ router.post('/add', async (req, res) => {
     const response = {success: true, message: "Note added successfully! " + ` id: ${req.body.id}`};
     res.json(response);
     
+    } catch (error) {
+        console.error('Error adding note:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+    
 });
 
 router.post('/delete', async (req, res) => {
-    await Note.deleteOne({ id: req.body.id });
-    const response = {success: true, message: "Note deleted successfully! " + ` id: ${req.body.id}`};
-    res.json(response);
+    try {
+        const idToDelete = req.body.id;
+
+        if (!idToDelete) {
+            return res.status(400).json({ success: false, error: 'Incomplete' });
+        }
+
+        const result = await Note.deleteOne({ id: idToDelete });
+    
+        if (result) {
+        const response = { success: true, message: 'Note deleted successfully!' + ` id: ${idToDelete}` };
+        res.json(response);
+        } else {
+        res.status(404).json({ success: false, error: 'Note not found' });
+        }
+    } catch (error) {
+        console.error('Error deleting note:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
     
 });
 

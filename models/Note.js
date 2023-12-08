@@ -18,12 +18,14 @@ const noteSchema = mongoose.Schema({
     },
     content:{
         type: String,
+        required:true
         
     },
     dateadded:{
         type: Date,
         default: Date.now
     }
+    
 });
 
 module.exports = mongoose.model("Note", noteSchema);

@@ -4,7 +4,6 @@ const bcryptjs = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Note = require('./../models/Note');
 const User = require('./../models/user');
-const auth = require('./../middleware/auth');
 
 //sign up
 router.post("/signup", async (req, res) => {
@@ -53,27 +52,6 @@ router.post("/signin", async (req, res) => {
     }
 });
 
-router.post("/tokenIsValid", async (req, res) => {
-    try{
-
-        const token = req.header("x-auth-token");
-        if(!token){
-            return res.json(false);
-        }
-        const verified = jwt.verify(token, "passwordKey");
-        if(!verified){
-            return res.json(false);
-        }
-        const user = await User.findById(verified.id);
-        if(!user){
-            return res.json(false);
-        }
-        return res.json(true);
-
-    }catch(e){
-        res.status(500).json({success:"false", error: e.message});
-    }
-})
 
 //get user data
 router.get("/", auth, async (req, res) => {

@@ -1,8 +1,58 @@
 const express = require('express');
 const router = express.Router();
+const bcryptjs = require('bcryptjs');
 
 const Note = require('./../models/Note');
+const User = require('./../models/user');
 
+//sign up
+router.post("/signup", async (req, res) => {
+    try{
+        const {name, email, password} = req.body;
+        const existingUser = await User.findOne({email});
+        if(existingUser){
+            return res.status(400).json({success:"false",message: "User already exists"});
+        } 
+        const hashedPassword = await bcryptjs.hash(password, 8);
+        let user = new User({ 
+            name,
+            email, 
+            password: hashedPassword
+        });
+        user = await user.save();
+        res.json(user);
+
+    }catch(e){
+        res.status(500).json({success:"false", error: e.message});
+    }
+});
+
+//sign in 
+router.post("/signin", async (req, res) => {
+    try{
+
+        const {email, password} = req.body;
+        const user = await User.findOne({email});
+        if(!user){
+            return res.status(400).json({success:"false",message: "User does not exist"});
+        }
+
+        const isMatch = await bcryptjs.compare(password, user.password);
+        if(!isMatch){
+            return res.status(400).json({success:"false",message: "Incorrect password"});
+        }
+
+        const token = jwt.sign({id: user._id}, "passwordKey");
+        res.json({token, ...user._doc});
+
+
+
+    }catch(e){
+        res.status(500).json({success:"false", error: e.message});
+    }
+});
+
+//list
 router.post('/list', async (req, res) => {  
     try {
         var notes = await Note.find({ userid: req.body.userid });
@@ -14,6 +64,7 @@ router.post('/list', async (req, res) => {
     
 });
 
+//add
 router.post('/add', async (req, res) => {
     
     try {
@@ -38,6 +89,7 @@ router.post('/add', async (req, res) => {
     
 });
 
+//delete
 router.post('/delete', async (req, res) => {
     try {
         const idToDelete = req.body.id;

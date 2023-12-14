@@ -62,7 +62,12 @@ router.post("/signin", async (req, res) => {
 //list
 router.post('/list', async (req, res) => {  
     try {
-        var notes = await Note.find({ userid: req.body.userid });
+
+        const token = req.headers.authorization;
+        const decodedToken = jwt.verify(token, "passwordKey");
+        const userId = decodedToken.id;
+
+        var notes = await Note.find({ userid: userId });
         res.json(notes);
     } catch (error) {
         console.error('Error fetching notes:', error);

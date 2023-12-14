@@ -54,10 +54,10 @@ router.post("/signin", async (req, res) => {
 
 
 //get user data
-router.get("/", auth, async (req, res) => {
-    const user = await User.findById(req.user.id);
-    res.json({...user._doc, token: req.token});
-});
+// router.get("/", auth, async (req, res) => {
+//     const user = await User.findById(req.user.id);
+//     res.json({...user._doc, token: req.token});
+// });
 
 //list
 router.post('/list', async (req, res) => {  

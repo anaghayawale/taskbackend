@@ -45,22 +45,13 @@ router.post("/signin", async (req, res) => {
         const token = jwt.sign({id: user._id}, "passwordKey");
         res.json({token, ...user._doc});
 
-
-
     }catch(e){
         res.status(500).json({success:"false", error: e.message});
     }
 });
 
-
-//get user data
-// router.get("/", auth, async (req, res) => {
-//     const user = await User.findById(req.user.id);
-//     res.json({...user._doc, token: req.token});
-// });
-
 //list
-router.post('/list', async (req, res) => {  
+router.get('/list', async (req, res) => {  
     try {
 
         const token = req.headers.authorization;
@@ -80,16 +71,21 @@ router.post('/list', async (req, res) => {
 router.post('/add', async (req, res) => {
     
     try {
+
+    const token = req.headers.authorization;
+    const decodedToken = jwt.verify(token, "passwordKey");
+    const userId = decodedToken.id;
     
-    await Note.deleteOne({id: req.body.id});
+    await Note.deleteOne({ id: req.body.id, userid: userId });
 
     const newNote = new Note({
-        id: req.body.id,
-        userid: req.body.userid,
-        title: req.body.title,
-        content: req.body.content,
-        dateadded: Date.now()
+            id: req.body.id,
+            userid: userId, // Use the obtained user ID
+            title: req.body.title,
+            content: req.body.content,
+            dateadded: Date.now()
     });
+
     await newNote.save();
     const response = {success: true, message: "Note added successfully! " + ` id: ${req.body.id}`};
     res.json(response);
@@ -102,15 +98,20 @@ router.post('/add', async (req, res) => {
 });
 
 //delete
-router.post('/delete', async (req, res) => {
+router.delete('/delete', async (req, res) => {
     try {
+
+        const token = req.headers.authorization;
+        const decodedToken = jwt.verify(token, "passwordKey");
+        const userId = decodedToken.id;
+
         const idToDelete = req.body.id;
 
         if (!idToDelete) {
             return res.status(400).json({ success: false, error: 'Incomplete' });
         }
 
-        const result = await Note.deleteOne({ id: idToDelete });
+        const result = await Note.deleteOne({ id: idToDelete, userid: userId });
     
         if (result) {
         const response = { success: true, message: 'Note deleted successfully!' + ` id: ${idToDelete}` };

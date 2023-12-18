@@ -62,7 +62,7 @@ router.get('/list', async (req, res) => {
         res.json(notes);
     } catch (error) {
         console.error('Error fetching notes:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        res.status(500).json({ success: false, error: error.message });
     }
     
 });
@@ -92,7 +92,7 @@ router.post('/add', async (req, res) => {
     
     } catch (error) {
         console.error('Error adding note:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        res.status(500).json({ success: false, error: error.message });
     }
     
 });
@@ -121,7 +121,7 @@ router.delete('/delete', async (req, res) => {
         }
     } catch (error) {
         console.error('Error deleting note:', error);
-        res.status(500).json({ success: false, error: 'Internal Server Error' });
+        res.status(500).json({ success: false, error: error.message });
     }
     
 });

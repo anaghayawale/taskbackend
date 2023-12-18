@@ -73,8 +73,9 @@ router.post('/add', async (req, res) => {
     try {
 
     const token = req.headers.authorization;
+    const splitToken = token.split(" ")[1];
     console.log("token",token)
-    const decodedToken = jwt.verify(token, "passwordKey");
+    const decodedToken = jwt.verify(splitToken, "passwordKey");
     console.log("decoded",decodedToken)
 
     const userId = decodedToken.id;

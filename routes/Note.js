@@ -73,11 +73,14 @@ router.post('/add', async (req, res) => {
     try {
 
     const token = req.headers.authorization;
+    console.log("token",token)
     const decodedToken = jwt.verify(token, "passwordKey");
+    console.log("decoded",decodedToken)
+
     const userId = decodedToken.id;
     
-    await Note.deleteOne({ id: req.body.id, userid: userId });
-
+    const deleted = await Note.deleteOne({ id: req.body.id, userid: userId });
+    console.log("deleted",deleted)  
     const newNote = new Note({
             id: req.body.id,
             userid: userId, // Use the obtained user ID
@@ -85,8 +88,10 @@ router.post('/add', async (req, res) => {
             content: req.body.content,
             dateadded: Date.now()
     });
+    
 
     await newNote.save();
+    console.log("newNote",newNote)
     const response = {success: true, message: "Note added successfully! " + ` id: ${req.body.id}`};
     res.json(response);
     

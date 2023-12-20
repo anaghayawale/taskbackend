@@ -21,10 +21,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        trim: true,
+        Selection: false
     }
 
-});
+},
+{timestamps: true});
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;

@@ -79,7 +79,7 @@ router.get('/list', async (req, res) => {
         if(!notes){
             return res.status(400).json({success:"false", error: "No notes found"});
         }
-        res.json(notes);
+        res.json({success: true, data: {notes}});
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });
     }
@@ -104,8 +104,6 @@ router.post('/add', async (req, res) => {
             title: req.body.title,
             content: req.body.content,
     });
-    
-
     const addedNote = await newNote.save();
     if(!addedNote){
         return res.status(400).json({success:"false", error: "Error adding note"});

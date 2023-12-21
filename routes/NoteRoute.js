@@ -167,12 +167,13 @@ router.delete('/delete', async (req, res) => {
             return res.status(400).json({ success: false, error: 'Incomplete Data' });
         }
 
-        const result = await Note.deleteOne({ _id: idToDelete, userId: userId });
+        
+        const result = await Note.deleteMany({ _id: { $in: idToDelete }, userId: userId });
     
         if (result) {
-        res.json({ success: true, message: 'Note deleted successfully!' });
+        res.json({ success: true, message: 'Notes deleted successfully!' });
         } else {
-        res.status(404).json({ success: false, error: 'Note not found' });
+        res.status(404).json({ success: false, error: 'Notes not found' });
         }
     } catch (error) {
         res.status(500).json({ success: false, error: error.message });

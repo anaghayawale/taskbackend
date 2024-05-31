@@ -58,7 +58,6 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
   if (bodyDataExists(email, password)) {
     res
-    .status(400)
     .json(
       new ApiResponse(
         400,
@@ -71,7 +70,6 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
   if (!emailIsValid(email)) {
     res
-    .status(400)
     .json(
       new ApiResponse(
         400,
@@ -84,7 +82,6 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
   if (!passwordIsValid(password)) {
     res
-    .status(400)
     .json(
       new ApiResponse(
         400,
@@ -98,7 +95,6 @@ const loginUser = asyncHandler(async (req, res, next) => {
   const existingUser = await User.findOne({ email });
   if (!existingUser) {
     res
-    .status(400)
     .json(
       new ApiResponse(
         400,
@@ -112,7 +108,6 @@ const loginUser = asyncHandler(async (req, res, next) => {
   const isPasswordCorrect = await existingUser.isPasswordCorrect(password);
   if (!isPasswordCorrect) {
     res
-    .status(400)
     .json(
       new ApiResponse(
         400,

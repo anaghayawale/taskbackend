@@ -24,9 +24,9 @@ const generateAccessAndRefreshTokens = async (user = null, id = undefined) => {
 
 // ------------------------- Register User -------------------------
 const registerUser = asyncHandler(async (req, res, next) => {
-  const { name, email,password } = req.body;
+  const { email,password } = req.body;
 
-  if (bodyDataExists(name, email, password)) {
+  if (bodyDataExists( email, password)) {
     throw new ApiError(400, "Incomplete data");
   }
 
@@ -44,7 +44,6 @@ const registerUser = asyncHandler(async (req, res, next) => {
   }
 
   const user = await User.create({
-    name,
     email,
     password,
   });

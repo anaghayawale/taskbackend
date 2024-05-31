@@ -57,25 +57,65 @@ const loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
   if (bodyDataExists(email, password)) {
-    throw new ApiError(400, "Incomplete data");
+    res
+    .status(400)
+    .json(
+      new ApiResponse(
+        400,
+        "Incomplete data"
+      )
+    );
+    //throw new ApiError(400, "Incomplete data");
   }
 
   if (!emailIsValid(email)) {
-    throw new ApiError(400, "Invalid credentials");
+    res
+    .status(400)
+    .json(
+      new ApiResponse(
+        400,
+        "Invalid credentials"
+      )
+    );
+    //throw new ApiError(400, "Invalid credentials");
   }
 
   if (!passwordIsValid(password)) {
-    throw new ApiError(400, "Invalid credentials");
+    res
+    .status(400)
+    .json(
+      new ApiResponse(
+        400,
+        "Invalid credentials"
+      )
+    );
+    // throw new ApiError(400, "Invalid credentials");
   }
 
   const existingUser = await User.findOne({ email });
   if (!existingUser) {
-    throw new ApiError(400, "User does not exist");
+    res
+    .status(400)
+    .json(
+      new ApiResponse(
+        400,
+        "User does not exist"
+      )
+    );
+    //throw new ApiError(400, "User does not exist");
   }
 
   const isPasswordCorrect = await existingUser.isPasswordCorrect(password);
   if (!isPasswordCorrect) {
-    throw new ApiError(400, "Invalid credentials");
+    res
+    .status(400)
+    .json(
+      new ApiResponse(
+        400,
+        "Invalid credentials"
+      )
+    );
+    //throw new ApiError(400, "Invalid credentials");
   }
 
   const token = existingUser.generateAccessToken();

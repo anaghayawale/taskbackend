@@ -62,6 +62,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
     .json(
       new ApiResponse(
         400,
+        [],
         "Incomplete data"
       )
     );
@@ -74,6 +75,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
     .json(
       new ApiResponse(
         400,
+        [],
         "Invalid credentials"
       )
     );
@@ -86,6 +88,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
     .json(
       new ApiResponse(
         400,
+        [],
         "Invalid credentials"
       )
     );
@@ -99,6 +102,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
     .json(
       new ApiResponse(
         400,
+        [],
         "User does not exist"
       )
     );
@@ -112,6 +116,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
     .json(
       new ApiResponse(
         400,
+        [],
         "Invalid credentials"
       )
     );

@@ -27,20 +27,52 @@ const registerUser = asyncHandler(async (req, res, next) => {
   const { email,password } = req.body;
 
   if (bodyDataExists( email, password)) {
-    throw new ApiError(400, "Incomplete data");
+    res
+    .json(
+      new ApiResponse(
+        400,
+        [],
+        "Incomplete data"
+      )
+    );
+    //throw new ApiError(400, "Incomplete data");
   }
 
   if (!emailIsValid(email)) {
-    throw new ApiError(400, "Invalid email");
+    res
+    .json(
+      new ApiResponse(
+        400,
+        [],
+        "Invalid email"
+      )
+    );
+    //throw new ApiError(400, "Invalid email");
   }
 
   if (!passwordIsValid(password)) {
-    throw new ApiError(400, "Invalid password");
+    res
+    .json(
+      new ApiResponse(
+        400,
+        [],
+        "Invalid password"
+      )
+    );
+    //throw new ApiError(400, "Invalid password");
   }
   const existingUser = await User.findOne({ email });
 
   if (existingUser) {
-    throw new ApiError(400, "User already exists");
+    res
+    .json(
+      new ApiResponse(
+        400,
+        [],
+        "User already exists"
+      )
+    );
+    //throw new ApiError(400, "User already exists");
   }
 
   const user = await User.create({
@@ -48,7 +80,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     password,
   });
 
-  res.status(201).json(new ApiResponse(201, "User created", user));
+  res.status(201).json(new ApiResponse(201, user,"User created"));
 });
 
 // ------------------------- Login User -------------------------

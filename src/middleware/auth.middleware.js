@@ -7,6 +7,7 @@ const checkJWT = asyncHandler(async (req, res, next) => {
   const { accessToken } =
     req.cookies || req.header("Authorization")?.replace("Bearer ", "");
   const { refreshToken } = req.cookies || req.body?.refreshToken;
+  console.log("accessToken:", accessToken);
 
   if (!(accessToken || refreshToken)) {
     throw new ApiError(401, "Unauthorized");

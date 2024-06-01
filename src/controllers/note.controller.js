@@ -11,11 +11,13 @@ const addNewNote = asyncHandler(async (req, res, next) => {
   const content = req.body.content;
 
   if (bodyDataExists(title,content)) {
-    throw new ApiError(400, "Incomplete Data");
+    res.status(200).json(new ApiResponse(400, {}, "Incomplete Data"));
+    //throw new ApiError(400, "Incomplete Data");
   }
 
   if (!userId) {
-    throw new ApiError(500, "Incomplete Data");
+    res.status(200).json(new ApiResponse(500, {}, "Incomplete Data"));
+    //throw new ApiError(500, "Incomplete Data");
   }
 
   const newNote = new Note({
@@ -25,7 +27,8 @@ const addNewNote = asyncHandler(async (req, res, next) => {
   });
   const addedNote = await newNote.save();
   if (!addedNote) {
-    throw new ApiError(500, "Error in adding note");
+    res.status(200).json(new ApiResponse(500, {}, "Error in adding note"));
+    //throw new ApiError(500, "Error in adding note");
   }
  
   console.log("addedNote:", addedNote);

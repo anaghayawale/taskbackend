@@ -5,13 +5,13 @@ import { User } from "../models/user.model.js";
 
 const checkJWT = asyncHandler(async (req, res, next) => {
   const authHeader = req.header("Authorization");
-  const token = authHeader ? authHeader.replace("Bearer ", "") : null;
+  const accessToken = authHeader ? authHeader.replace("Bearer ", "") : null;
   // const { accessToken } =
   //   req.cookies || req.header("Authorization")?.replace("Bearer ", "");
-  // const { refreshToken } = req.cookies || req.body?.refreshToken;
-  // console.log("accessToken:", accessToken);
+  const { refreshToken } = req.cookies || req.body?.refreshToken;
+  console.log("accessToken:", accessToken);
 
-  if (!token) {
+  if (!accessToken || !refreshToken) {
     throw new ApiError(401, "Unauthorized");
   }
 

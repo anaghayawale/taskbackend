@@ -9,7 +9,7 @@ const checkJWT = asyncHandler(async (req, res, next) => {
   // const { accessToken } =
   //   req.cookies || req.header("Authorization")?.replace("Bearer ", "");
   const { refreshToken } = req.cookies || req.body?.refreshToken;
-  console.log("accessToken:", accessToken);
+  console.log("accessToken:",accessToken);
 
   if (!accessToken || !refreshToken) {
     throw new ApiError(401, "Unauthorized");
@@ -18,11 +18,11 @@ const checkJWT = asyncHandler(async (req, res, next) => {
   const { _id } = accessToken
     ? jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
     : jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
-
+  console.log("_id:",_id);
   if (!_id) {
     throw new ApiError(401, "Unauthorized");
   }
-
+ 
   const existingUser = await User.findById(_id).select(
     "-password -refreshToken"
   );
